@@ -42,7 +42,7 @@ public class Main {
                     continue;
                 } else if (command.equals("PLACE")) { // Put the robot on the table
 
-                    String parameters = "";
+                    String parameters;
                     if(input.length > 1){
                         parameters = input[1];
                     }else {
@@ -78,8 +78,8 @@ public class Main {
                 } else if (!command.equals("PLACE") && robot.isRobotOnTable()) {
 
                     if(command.equals("MOVE")) robot.move();
-                    if(command.equals("LEFT")) robot.turn(JavaRobot.Rotation.ANTICLOCKWISE);
-                    if(command.equals("RIGHT")) robot.turn(JavaRobot.Rotation.CLOCKWISE);
+                    if(command.equals("LEFT")) robot.turn(JavaRobot.RotationDirection.COUNTERCLOCKWISE);
+                    if(command.equals("RIGHT")) robot.turn(JavaRobot.RotationDirection.CLOCKWISE);
                     if(command.equals("REPORT")) robot.report();
                 }else{
                     System.out.println("Invalid command.\n");
