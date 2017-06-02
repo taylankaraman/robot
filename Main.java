@@ -6,7 +6,7 @@ import java.util.Scanner;
 /**
  * Main class with main function
  */
-public class Main {
+class Main {
     public static void main(String[] args) {
 
         List<String> validCommands = new ArrayList<>(Arrays.asList("PLACE", "MOVE", "LEFT", "RIGHT", "REPORT", "QUIT"));
@@ -32,15 +32,14 @@ public class Main {
                 System.out.println("Please enter a valid command. PLACE X,Y,DIRECTION / MOVE / LEFT / RIGHT / REPORT\n");
                 continue;
             }else{
-                String facing = "";
-                int x = 0;
-                int y = 0;
+                String facing;
+                int x;
+                int y;
 
-                // The robot is not on the table yet
                 if (!command.equals("PLACE") && !robot.isRobotOnTable()) {
                     System.out.println("You need to PLACE the robot first.\n");
                     continue;
-                } else if (command.equals("PLACE")) { // Put the robot on the table
+                } else if (command.equals("PLACE")) {
 
                     String parameters;
                     if(input.length > 1){
@@ -61,20 +60,13 @@ public class Main {
                         continue;
                     }
 
-                    if( x >= 0 && x < 6 && y >= 0 && y < 6 && validDirections.contains(facing.toUpperCase())){
-
-                        if(!robot.isRobotOnTable()){
-                            robot.placeRobot(x, y, facing);
-                        }else{
-                            robot.relocateRobot(x, y, facing);
-                        }
-
+                    if(validDirections.contains(facing.toUpperCase())){
+                        robot.placeRobot(x, y, facing);
                     } else {
                         System.out.println("PLACE command has incorrect parameters. Cannot place robot.");
                         continue;
                     }
 
-                    // The robot is already on the table
                 } else if (!command.equals("PLACE") && robot.isRobotOnTable()) {
 
                     if(command.equals("MOVE")) robot.move();

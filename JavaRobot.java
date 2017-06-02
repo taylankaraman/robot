@@ -3,8 +3,8 @@
  */
 
 public class JavaRobot {
-    private Coordinates coordinates = new Coordinates(0,0);
-    private boolean robotPlacedOnTable = false;
+    private final Coordinates coordinates = new Coordinates();
+    private boolean isRobotOnTable = false;
     private Orientation robotOrientation = null;
 
     public enum Orientation{
@@ -12,9 +12,9 @@ public class JavaRobot {
         // to determine the next direction the
         // robot will be facing when it is turned
         NORTH(1,3),
-        EAST(2,0),
+        EAST (2,0),
         SOUTH(3,1),
-        WEST(0,2);
+        WEST (0,2);
 
         private int nextClockWise = 0;
         private int nextCounterClockwise = 0;
@@ -38,18 +38,13 @@ public class JavaRobot {
     public enum Path { X_AXIS, Y_AXIS}
 
     void placeRobot(int x, int y, String facing){
-        relocateRobot(x, y, facing);
-        robotPlacedOnTable = true;
-    }
-
-    void relocateRobot(int x, int y, String facing){
-        this.coordinates.xCoordinate = x;
-        this.coordinates.yCoordinate = y;
+        if(!isRobotOnTable) isRobotOnTable = true;
+        this.coordinates.setCoordinates(x, y);
         this.robotOrientation = Orientation.valueOf(facing);
     }
 
-    boolean isRobotOnTable(){
-        return robotPlacedOnTable;
+    boolean isRobotOnTable() {
+        return isRobotOnTable;
     }
 
     void report() {
@@ -86,24 +81,24 @@ public class JavaRobot {
         private int xCoordinate = 0;
         private int yCoordinate = 0;
 
-        Coordinates(int x, int y){
+        void setCoordinates(int x, int y){
             xCoordinate = x;
             yCoordinate = y;
         }
 
         void changeCoordinates(OperationType ot, Path pt){
             if(ot == OperationType.INCREMENT){
-                if(pt == Path.X_AXIS && xCoordinate < 5){
+                if(pt == Path.X_AXIS && xCoordinate <= 4){
                     this.xCoordinate++;
                 }
-                else if( pt == Path.Y_AXIS && yCoordinate < 5){
+                else if( pt == Path.Y_AXIS && yCoordinate <= 4){
                     this.yCoordinate++;
                 }
             }else{
-                if(pt == Path.X_AXIS && xCoordinate > 0){
+                if(pt == Path.X_AXIS && xCoordinate >= 1){
                     this.xCoordinate--;
                 }
-                else if( pt == Path.Y_AXIS && yCoordinate > 0){
+                else if( pt == Path.Y_AXIS && yCoordinate >= 1){
                     this.yCoordinate--;
                 }
             }
