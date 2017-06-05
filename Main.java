@@ -72,7 +72,9 @@ class Main {
                     if(command.equals("MOVE")) robot.move();
                     if(command.equals("LEFT")) robot.turn(JavaRobot.RotationDirection.COUNTERCLOCKWISE);
                     if(command.equals("RIGHT")) robot.turn(JavaRobot.RotationDirection.CLOCKWISE);
-                    if(command.equals("REPORT")) robot.report();
+                    if(command.equals("REPORT")) {
+                       System.out.println(robot.report());
+                    };
                 }else{
                     System.out.println("Invalid command.\n");
                 }

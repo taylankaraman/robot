@@ -47,10 +47,10 @@ public class JavaRobot {
         return isRobotOnTable;
     }
 
-    void report() {
-        System.out.println("Output: " + this.coordinates.xCoordinate + ","
+    String report() {
+        return "Output: " + this.coordinates.xCoordinate + ","
                                       + this.coordinates. yCoordinate + ","
-                                      + this.robotOrientation);
+                                      + this.robotOrientation;
     }
 
     void turn(RotationDirection rotation) {
