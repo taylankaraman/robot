@@ -1,7 +1,6 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Main class with main function
@@ -9,72 +8,59 @@ import java.util.Scanner;
 class Main {
     public static void main(String[] args) {
 
-        List<String> validCommands = new ArrayList<>(Arrays.asList("PLACE", "MOVE", "LEFT", "RIGHT", "REPORT", "QUIT"));
-        List<String> validDirections = new ArrayList<>(Arrays.asList("NORTH", "EAST", "SOUTH", "WEST"));
-        Scanner scanner = new Scanner(System.in);
         boolean quit = false;
+        Pattern command_pattern = Pattern.compile("^QUIT|^MOVE|^LEFT|^RIGHT|^REPORT|^PLACE\\s[0-4],[0-4],[a-zA-Z]{4,6}",Pattern.CASE_INSENSITIVE);
+        String parameters = "";
         JavaRobot robot = new JavaRobot();
 
+        System.out.println("ROBOT\n ");
+        System.out.println("Valid commands: PLACE [X,Y,DIRECTION] / MOVE / LEFT / RIGHT / REPORT / QUIT\n\n ");
+
         do{
-            System.out.println("Enter command(QUIT to exit): ");
+            System.out.println("Enter command: ");
 
-            String command = "";
-            String input[] = scanner.nextLine().split(" ");
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine();
 
-            if(input.length > 0) {
-                command = input[0].toUpperCase();
+            Matcher m = command_pattern.matcher(input);
+            if(m.matches()){
+                input = input.toUpperCase();
+            }else{
+                System.out.println("Please enter a valid command.");
+                continue;
             }
+
+            Scanner scanner_command = new Scanner(input);
+            String command = scanner_command.findInLine("[a-zA-Z]{4,6}");
+
+            if(command.equals("PLACE")) parameters = input.split(" ")[1];
 
             if(command.equals("QUIT")) {
                 quit = true;
                 continue;
-            }else if(!validCommands.contains(command)){
-                System.out.println("Please enter a valid command. PLACE X,Y,DIRECTION / MOVE / LEFT / RIGHT / REPORT\n");
-                continue;
             }else{
-                String facing;
-                int x;
-                int y;
+                String facing = "";
+                int x = 0;
+                int y = 0;
 
                 if (!command.equals("PLACE") && !robot.isRobotOnTable()) {
                     System.out.println("You need to PLACE the robot first.\n");
                     continue;
                 } else if (command.equals("PLACE")) {
 
-                    String parameters;
-                    if(input.length > 1){
-                        parameters = input[1];
-                    }else {
-                        System.out.println("PLACE commands needs parameters. X,Y,DIRECTION");
-                        continue;
-                    }
+                    Scanner scanner_input = new Scanner(parameters);
+                    x = Integer.parseInt(scanner_input.findInLine("\\d"));
+                    y = Integer.parseInt(scanner_input.findInLine("\\d"));
+                    facing = scanner_input.findInLine("[a-zA-Z]{4,6}");
 
-                    String[] parts = parameters.split(",");
-
-                    if(parts.length == 3){
-                        x = Integer.parseInt(parts[0]);
-                        y = Integer.parseInt(parts[1]);
-                        facing = parts[2].toUpperCase();
-                    } else {
-                        System.out.println("PLACE commands needs parameters. X,Y,DIRECTION");
-                        continue;
-                    }
-
-                    if(validDirections.contains(facing.toUpperCase())){
-                        robot.placeRobot(x, y, facing);
-                    } else {
-                        System.out.println("PLACE command has incorrect parameters. Cannot place robot.");
-                        continue;
-                    }
+                    robot.placeRobot(x, y, facing);
 
                 } else if (!command.equals("PLACE") && robot.isRobotOnTable()) {
 
                     if(command.equals("MOVE")) robot.move();
                     if(command.equals("LEFT")) robot.turn(JavaRobot.RotationDirection.COUNTERCLOCKWISE);
                     if(command.equals("RIGHT")) robot.turn(JavaRobot.RotationDirection.CLOCKWISE);
-                    if(command.equals("REPORT")) {
-                       System.out.println(robot.report());
-                    };
+                    if(command.equals("REPORT")) System.out.println(robot.report());
                 }else{
                     System.out.println("Invalid command.\n");
                 }
