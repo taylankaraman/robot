@@ -40,7 +40,7 @@ public class JavaRobot {
     void placeRobot(int x, int y, String facing){
         if(!isRobotOnTable) isRobotOnTable = true;
         this.coordinates.setCoordinates(x, y);
-        this.robotOrientation = Orientation.valueOf(facing);
+        this.robotOrientation = Orientation.valueOf(facing.toUpperCase());
     }
 
     boolean isRobotOnTable() {

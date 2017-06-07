@@ -23,9 +23,8 @@ class Main {
             String input = scanner.nextLine();
 
             Matcher m = command_pattern.matcher(input);
-            if(m.matches()){
-                input = input.toUpperCase();
-            }else{
+
+            if(!m.matches()){
                 System.out.println("Please enter a valid command.");
                 continue;
             }
@@ -33,9 +32,9 @@ class Main {
             Scanner scanner_command = new Scanner(input);
             String command = scanner_command.findInLine("[a-zA-Z]{4,6}");
 
-            if(command.equals("PLACE")) parameters = input.split(" ")[1];
+            if(command.equalsIgnoreCase("PLACE")) parameters = input.split(" ")[1];
 
-            if(command.equals("QUIT")) {
+            if(command.equalsIgnoreCase("QUIT")) {
                 quit = true;
                 continue;
             }else{
@@ -43,24 +42,24 @@ class Main {
                 int x = 0;
                 int y = 0;
 
-                if (!command.equals("PLACE") && !robot.isRobotOnTable()) {
+                if (!command.equalsIgnoreCase("PLACE") && !robot.isRobotOnTable()) {
                     System.out.println("You need to PLACE the robot first.\n");
                     continue;
-                } else if (command.equals("PLACE")) {
+                } else if (command.equalsIgnoreCase("PLACE")) {
 
-                    Scanner scanner_input = new Scanner(parameters);
-                    x = Integer.parseInt(scanner_input.findInLine("\\d"));
-                    y = Integer.parseInt(scanner_input.findInLine("\\d"));
-                    facing = scanner_input.findInLine("[a-zA-Z]{4,6}");
+                    Scanner scanner_parameters = new Scanner(parameters);
+                    x = Integer.parseInt(scanner_parameters.findInLine("\\d"));
+                    y = Integer.parseInt(scanner_parameters.findInLine("\\d"));
+                    facing = scanner_parameters.findInLine("[a-zA-Z]{4,6}");
 
                     robot.placeRobot(x, y, facing);
 
-                } else if (!command.equals("PLACE") && robot.isRobotOnTable()) {
+                } else if (!command.equalsIgnoreCase("PLACE") && robot.isRobotOnTable()) {
 
-                    if(command.equals("MOVE")) robot.move();
-                    if(command.equals("LEFT")) robot.turn(JavaRobot.RotationDirection.COUNTERCLOCKWISE);
-                    if(command.equals("RIGHT")) robot.turn(JavaRobot.RotationDirection.CLOCKWISE);
-                    if(command.equals("REPORT")) System.out.println(robot.report());
+                    if(command.equalsIgnoreCase("MOVE")) robot.move();
+                    if(command.equalsIgnoreCase("LEFT")) robot.turn(JavaRobot.RotationDirection.COUNTERCLOCKWISE);
+                    if(command.equalsIgnoreCase("RIGHT")) robot.turn(JavaRobot.RotationDirection.CLOCKWISE);
+                    if(command.equalsIgnoreCase("REPORT")) System.out.println(robot.report());
                 }else{
                     System.out.println("Invalid command.\n");
                 }
