@@ -36,15 +36,13 @@ class Main {
 
             if(command.equalsIgnoreCase("QUIT")) {
                 quit = true;
-                continue;
             }else{
-                String facing = "";
-                int x = 0;
-                int y = 0;
+                String facing;
+                int x;
+                int y;
 
                 if (!command.equalsIgnoreCase("PLACE") && !robot.isRobotOnTable()) {
                     System.out.println("You need to PLACE the robot first.\n");
-                    continue;
                 } else if (command.equalsIgnoreCase("PLACE")) {
 
                     Scanner scanner_parameters = new Scanner(parameters);
